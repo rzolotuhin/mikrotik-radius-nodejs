@@ -1,0 +1,14 @@
+{
+    "scripts": {
+        "start": "node --max-old-space-size=60 ./server.js"
+    },
+    "version": "2021.02.13",
+    "dependencies": {
+        "chap": "^0.4.0",
+        "crypto": "^1.0.1",
+        "fs": "^0.0.1-security",
+        "ini": "^2.0.0",
+        "md5": "^2.3.0",
+        "radius": "^1.1.4"
+    }
+}
