@@ -138,6 +138,7 @@ let config = new class config {
 class radiusEvent {
     static login = "Login-User";
     static ppp = "Framed-User";
+    static authOnly = "Authenticate-Only"
 }
 
 /*
@@ -366,6 +367,7 @@ let mikrotik = new class mikrotik {
     serviceToCatalog(service) {
         let template = "%s/config/%s/";
         switch (service) {
+            case radiusEvent.authOnly:
             case radiusEvent.login: return formatStr(template, __dirname, "users");
             case radiusEvent.ppp:   return formatStr(template, __dirname, "ppp");
         }
@@ -422,7 +424,7 @@ let mikrotik = new class mikrotik {
             case "sha384":
             case "sha512":
                 tree.security.password = crypto.createHash(tree.security.hash)
-                    .update(tree.security.username + tree.security.salt)
+                    .update(tree.security.password)
                     .digest('hex')
                     .toString();
                 break;
@@ -490,6 +492,7 @@ function auth_message(msg, req) {
                         if (!response) {
                             var handler = new handlerClass(packet, cfg.secret, profile.username(), profile.password());
                             if (handler.authable()) {
+                                console.log(packet);
                                 log.message("The radius client profile found, virtual name: %s", virtualName);
                                 log.message("The radius client using protokol: %s", handler.constructor.name);
                                 let args = handler.check();
