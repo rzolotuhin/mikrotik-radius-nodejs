@@ -343,10 +343,10 @@ let mikrotik = new class mikrotik {
                                                 return "";
                                             });
                                         }
+                                        profile = this.profilePacker(username, profile, config, packet)
+                                        return profile;
                                     }
                                 }
-                                profile = this.profilePacker(username, profile, config, packet)
-                                return profile;
                             }
                         }
                     }
@@ -490,9 +490,12 @@ function auth_message(msg, req) {
                     /* Подбираем протокол из списка, полученного ранее в конфиге */
                     protokol.some(handlerClass => {
                         if (!response) {
+                            console.log(
+                                profile.username(),
+                                profile.password()
+                            )
                             var handler = new handlerClass(packet, cfg.secret, profile.username(), profile.password());
                             if (handler.authable()) {
-                                console.log(packet);
                                 log.message("The radius client profile found, virtual name: %s", virtualName);
                                 log.message("The radius client using protokol: %s", handler.constructor.name);
                                 let args = handler.check();
