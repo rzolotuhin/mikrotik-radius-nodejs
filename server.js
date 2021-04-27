@@ -490,10 +490,6 @@ function auth_message(msg, req) {
                     /* Подбираем протокол из списка, полученного ранее в конфиге */
                     protokol.some(handlerClass => {
                         if (!response) {
-                            console.log(
-                                profile.username(),
-                                profile.password()
-                            )
                             var handler = new handlerClass(packet, cfg.secret, profile.username(), profile.password());
                             if (handler.authable()) {
                                 log.message("The radius client profile found, virtual name: %s", virtualName);
